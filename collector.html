@@ -1,0 +1,92 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Collector Dashboard | RecycleLink</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <main class="auth-container">
+    <section class="auth-card" style="max-width: 850px;">
+
+      <a href="index.html" class="brand">Recycle<span>Link</span></a>
+
+      <p class="eyebrow">COLLECTOR WORKSPACE</p>
+      <h1>Welcome to your dashboard</h1>
+      <p class="subtitle">Turn your recyclable waste into valuable resources.</p>
+
+      <div class="dashboard-stats">
+        <div class="stat-card">
+          <h3 id="totalListings">0</h3>
+          <p>Your listings</p>
+        </div>
+        <div class="stat-card">
+          <h3 id="activeListings">0</h3>
+          <p>Available listings</p>
+        </div>
+        <div class="stat-card">
+          <h3 id="completedListings">0</h3>
+          <p>Completed deals</p>
+        </div>
+      </div>
+
+      <div class="dashboard-section">
+        <h2>Post recyclable waste</h2>
+        <p class="subtitle">Tell recyclers what materials you have available.</p>
+
+        <form id="listingForm">
+
+          <label for="material">Waste material</label>
+          <select id="material" required>
+            <option value="">Select material</option>
+            <option value="Plastic">Plastic</option>
+            <option value="Paper">Paper</option>
+            <option value="Metal">Metal</option>
+            <option value="Glass">Glass</option>
+            <option value="E-waste">E-waste</option>
+            <option value="Textile">Textile</option>
+            <option value="Organic">Organic waste</option>
+            <option value="Other">Other</option>
+          </select>
+
+          <label for="quantity">Quantity (kg)</label>
+          <input type="number" id="quantity" min="0.1" step="0.1" placeholder="e.g. 50" required>
+
+          <label for="listingLocation">Pickup location</label>
+          <input type="text" id="listingLocation" placeholder="Area, city" required>
+
+          <label for="description">Description</label>
+          <textarea id="description" placeholder="Describe the condition and type of waste..."></textarea>
+
+          <label for="wastePhoto">Waste photo (optional)</label>
+          <input type="file" id="wastePhoto" accept="image/*">
+
+          <button type="submit" id="listingBtn">Publish Listing</button>
+          <p id="listingMessage" role="status"></p>
+
+        </form>
+      </div>
+
+      <div class="dashboard-section">
+        <h2>Your waste listings</h2>
+        <div id="myListings">
+          <p>Loading your listings...</p>
+        </div>
+      </div>
+
+      <button type="button" id="logoutBtn" style="background:#555;">
+        Logout
+      </button>
+
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/config.js"></script>
+  <script src="js/collector.js"></script>
+
+</body>
+</html>

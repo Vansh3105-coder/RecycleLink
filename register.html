@@ -1,0 +1,87 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Join RecycleLink</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <main class="auth-container">
+    <section class="auth-card">
+
+      <a href="index.html" class="brand">Recycle<span>Link</span></a>
+
+      <p class="eyebrow">JOIN THE CIRCULAR ECONOMY</p>
+      <h1>Create your account</h1>
+      <p class="subtitle">Connect waste with the people who can give it a second life.</p>
+
+      <form id="registerForm">
+
+        <label for="role">I want to join as</label>
+        <select id="role" required>
+          <option value="collector">Waste Collector</option>
+          <option value="recycler">Authorized Recycler</option>
+        </select>
+
+        <label for="fullName">Full name</label>
+        <input type="text" id="fullName" placeholder="Your full name" required>
+
+        <label for="email">Email address</label>
+        <input type="email" id="email" placeholder="you@example.com" required>
+
+        <label for="phone">Phone number</label>
+        <input type="tel" id="phone" placeholder="Your phone number" required>
+
+        <label for="location">Your location</label>
+        <input type="text" id="location" placeholder="City / Area" required>
+
+        <div id="recyclerFields" class="hidden">
+
+          <h3>Facility information</h3>
+
+          <label for="facilityName">Facility name</label>
+          <input type="text" id="facilityName" placeholder="Business / Facility name">
+
+          <label for="facilityAddress">Facility address</label>
+          <textarea id="facilityAddress" placeholder="Complete facility address"></textarea>
+
+          <label for="materials">Accepted waste materials</label>
+          <select id="materials" multiple>
+            <option value="Plastic">Plastic</option>
+            <option value="Paper">Paper</option>
+            <option value="Metal">Metal</option>
+            <option value="Glass">Glass</option>
+            <option value="E-waste">E-waste</option>
+            <option value="Textile">Textile</option>
+            <option value="Organic">Organic waste</option>
+          </select>
+          <small>Hold Ctrl to select multiple materials.</small>
+
+        </div>
+
+        <label for="password">Password</label>
+        <input type="password" id="password" placeholder="At least 6 characters" minlength="6" required>
+
+        <button type="submit" id="registerBtn">Create Account</button>
+
+        <p id="registerMessage" role="status"></p>
+
+      </form>
+
+      <p class="auth-switch">
+        Already have an account?
+        <a href="login.html">Log in</a>
+      </p>
+
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/config.js"></script>
+  <script src="js/auth.js"></script>
+
+</body>
+</html>
