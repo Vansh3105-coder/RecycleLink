@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-labelledby="title desc">
+  <title id="title">RecycleLink mark</title>
+  <desc id="desc">Three forest green arrows forming a circular link around a fresh green center.</desc>
+  <rect width="256" height="256" rx="56" fill="#123D2B"/>
+  <path d="M80 98h70l-18-26m18 26-18 26M176 158h-70l18 26m-18-26 18-26M112 72 80 128l32 56m32-112 32 56-32 56" fill="none" stroke="#DCE9DF" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/>
+  <circle cx="128" cy="128" r="11" fill="#75B798"/>
+</svg>

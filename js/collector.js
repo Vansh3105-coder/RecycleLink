@@ -4,7 +4,10 @@ const listingForm = document.getElementById("listingForm");
 let currentUser = null;
 
 async function initializeCollector() {
-  const { data: { user }, error } = await supabaseClient.auth.getUser();
+  const {
+    data: { user },
+    error
+  } = await supabaseClient.auth.getUser();
 
   if (error || !user) {
     window.location.href = "login.html";
@@ -17,7 +20,7 @@ async function initializeCollector() {
     .eq("id", user.id)
     .single();
 
-  if (profileError || profile.role !== "collector") {
+  if (profileError || !profile || profile.role !== "collector") {
     await supabaseClient.auth.signOut();
     window.location.href = "login.html";
     return;
@@ -31,6 +34,10 @@ async function initializeCollector() {
   await loadListings();
   await loadOffers();
 }
+
+// ==========================================
+// LOAD COLLECTOR LISTINGS
+// ==========================================
 
 async function loadListings() {
   const { data, error } = await supabaseClient
@@ -46,7 +53,8 @@ async function loadListings() {
 
   const listings = data || [];
 
-  document.getElementById("totalListings").textContent = listings.length;
+  document.getElementById("totalListings").textContent =
+    listings.length;
 
   document.getElementById("activeListings").textContent =
     listings.filter(item => item.status === "available").length;
@@ -57,7 +65,7 @@ async function loadListings() {
   const container = document.getElementById("myListings");
 
   if (listings.length === 0) {
-    container.innerHTML = "<p>You haven't posted any listings yet.</p>";
+    container.textContent = "You haven't posted any listings yet.";
     return;
   }
 
@@ -85,6 +93,54 @@ async function loadListings() {
   });
 }
 
+// ==========================================
+// ACCEPT OFFER
+// ==========================================
+
+async function acceptOffer(offerId, button) {
+  const confirmed = window.confirm(
+    "Are you sure you want to accept this offer?\n\n" +
+    "The other pending offers for this listing will be rejected, " +
+    "and a transaction will be created."
+  );
+
+  if (!confirmed) return;
+
+  button.disabled = true;
+  button.textContent = "Processing...";
+
+  try {
+    const { data: transactionId, error } = await supabaseClient
+      .rpc("accept_offer", {
+        p_offer_id: offerId
+      });
+
+    if (error) throw error;
+
+    window.alert(
+      "Offer accepted successfully!\n\n" +
+      "Transaction ID: " + transactionId
+    );
+
+    await loadListings();
+    await loadOffers();
+
+  } catch (error) {
+    console.error("Offer acceptance failed:", error);
+
+    window.alert(
+      "Could not accept this offer:\n" + error.message
+    );
+
+    button.disabled = false;
+    button.textContent = "Accept Offer";
+  }
+}
+
+// ==========================================
+// LOAD RECEIVED OFFERS
+// ==========================================
+
 async function loadOffers() {
   const container = document.getElementById("receivedOffers");
 
@@ -96,10 +152,10 @@ async function loadOffers() {
   container.textContent = "Loading offers...";
 
   try {
-    // Get this collector's listings
+    // Get collector listings
     const { data: listings, error: listingError } = await supabaseClient
       .from("waste_listings")
-      .select("id, material")
+      .select("id, material, status")
       .eq("collector_id", currentUser.id);
 
     if (listingError) throw listingError;
@@ -110,11 +166,12 @@ async function loadOffers() {
     }
 
     const listingIds = listings.map(item => item.id);
+
     const listingMap = new Map(
-      listings.map(item => [item.id, item.material])
+      listings.map(item => [item.id, item])
     );
 
-    // Get offers for those listings
+    // Get offers
     const { data: offers, error: offerError } = await supabaseClient
       .from("offers")
       .select("*")
@@ -128,8 +185,10 @@ async function loadOffers() {
       return;
     }
 
-    // Get recycler facility details
-    const recyclerIds = [...new Set(offers.map(item => item.recycler_id))];
+    // Get recycler facilities
+    const recyclerIds = [
+      ...new Set(offers.map(item => item.recycler_id))
+    ];
 
     const { data: recyclers, error: recyclerError } = await supabaseClient
       .from("recyclers")
@@ -142,32 +201,40 @@ async function loadOffers() {
       (recyclers || []).map(item => [item.id, item])
     );
 
-    // Get recycler account names
+    // Get recycler profile names
     const userIds = [
       ...new Set((recyclers || []).map(item => item.user_id))
     ];
 
-    const { data: profiles, error: profileError } = await supabaseClient
-      .from("profiles")
-      .select("id, full_name")
-      .in("id", userIds);
+    let profiles = [];
 
-    if (profileError) throw profileError;
+    if (userIds.length > 0) {
+      const { data, error: profileError } = await supabaseClient
+        .from("profiles")
+        .select("id, full_name")
+        .in("id", userIds);
+
+      if (profileError) throw profileError;
+
+      profiles = data || [];
+    }
 
     const profileMap = new Map(
-      (profiles || []).map(item => [item.id, item.full_name])
+      profiles.map(item => [item.id, item.full_name])
     );
 
     container.replaceChildren();
 
     offers.forEach(offer => {
       const recycler = recyclerMap.get(offer.recycler_id);
+      const listing = listingMap.get(offer.listing_id);
 
       const card = document.createElement("article");
       card.className = "offer-card";
 
       const title = document.createElement("h3");
-      title.textContent = `${listingMap.get(offer.listing_id) || "Waste listing"} — Offer`;
+      title.textContent =
+        `${listing?.material || "Waste listing"} — Offer`;
 
       const facility = document.createElement("p");
       facility.textContent =
@@ -178,24 +245,58 @@ async function loadOffers() {
         `Recycler: ${profileMap.get(recycler?.user_id) || "Unknown"}`;
 
       const price = document.createElement("h3");
-      price.textContent = `₹${Number(offer.offered_price).toLocaleString("en-IN")}`;
+      price.textContent =
+        `₹${Number(offer.offered_price).toLocaleString("en-IN")}`;
 
       const message = document.createElement("p");
-      message.textContent = `Message: ${offer.message || "No message provided"}`;
+      message.textContent =
+        `Message: ${offer.message || "No message provided"}`;
 
       const status = document.createElement("span");
       status.className = "status-tag";
       status.textContent = offer.status;
 
-      card.append(title, facility, recyclerName, price, message, status);
+      card.append(
+        title,
+        facility,
+        recyclerName,
+        price,
+        message,
+        status
+      );
+
+      // Show accept button only for pending offers
+      // belonging to available listings.
+      if (
+        offer.status === "pending" &&
+        listing?.status === "available"
+      ) {
+        const acceptButton = document.createElement("button");
+
+        acceptButton.type = "button";
+        acceptButton.className = "accept-offer-btn";
+        acceptButton.textContent = "Accept Offer";
+
+        acceptButton.addEventListener("click", () => {
+          acceptOffer(offer.id, acceptButton);
+        });
+
+        card.appendChild(acceptButton);
+      }
+
       container.appendChild(card);
     });
 
   } catch (error) {
     console.error("Error loading offers:", error);
-    container.textContent = `Could not load offers: ${error.message}`;
+    container.textContent =
+      `Could not load offers: ${error.message}`;
   }
 }
+
+// ==========================================
+// CREATE WASTE LISTING
+// ==========================================
 
 if (listingForm) {
   listingForm.addEventListener("submit", async (event) => {
@@ -209,10 +310,23 @@ if (listingForm) {
     message.textContent = "";
 
     try {
+      if (!currentUser) {
+        throw new Error("Please wait for your account to load.");
+      }
+
       const material = document.getElementById("material").value;
-      const quantity = Number(document.getElementById("quantity").value);
-      const location = document.getElementById("listingLocation").value.trim();
-      const description = document.getElementById("description").value.trim();
+
+      const quantity = Number(
+        document.getElementById("quantity").value
+      );
+
+      const location = document
+        .getElementById("listingLocation")
+        .value.trim();
+
+      const description = document
+        .getElementById("description")
+        .value.trim();
 
       if (!Number.isFinite(quantity) || quantity <= 0) {
         throw new Error("Enter a valid quantity.");
@@ -230,15 +344,19 @@ if (listingForm) {
 
       if (error) throw error;
 
-      message.textContent = "Your waste listing was published!";
+      message.textContent =
+        "Your waste listing was published!";
+
       message.className = "success-message";
 
       listingForm.reset();
+
       await loadListings();
       await loadOffers();
 
     } catch (error) {
       console.error(error);
+
       message.textContent = error.message;
       message.className = "error-message";
 
@@ -249,9 +367,21 @@ if (listingForm) {
   });
 }
 
-document.getElementById("logoutBtn").addEventListener("click", async () => {
-  await supabaseClient.auth.signOut();
-  window.location.href = "login.html";
-});
+// ==========================================
+// LOGOUT
+// ==========================================
+
+const logoutButton = document.getElementById("logoutBtn");
+
+if (logoutButton) {
+  logoutButton.addEventListener("click", async () => {
+    await supabaseClient.auth.signOut();
+    window.location.href = "login.html";
+  });
+}
+
+// ==========================================
+// START DASHBOARD
+// ==========================================
 
 initializeCollector();

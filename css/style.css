@@ -297,3 +297,25 @@ button:disabled {
   font-size: 14px;
   color: #647269;
 }
+.accept-offer-btn {
+    background: #1f6b45;
+    color: white;
+    border: none;
+    padding: 11px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 14px;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.accept-offer-btn:hover {
+    background: #123d2b;
+    transform: translateY(-2px);
+}
+
+.accept-offer-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}

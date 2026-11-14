@@ -1,1367 +1,237 @@
-
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#123d2c">
-
-    <title>RecycleLink — Turn Waste Into Worth</title>
-
-    <meta name="description" content="RecycleLink connects waste collectors with authorized recyclers. List recyclable materials, receive competitive offers and build a cleaner future.">
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
-    <style>
-        :root {
-            --forest: #123d2c;
-            --forest-dark: #0b2b20;
-            --forest-light: #20563e;
-            --cream: #f7f6ef;
-            --cream-dark: #eeeee3;
-            --sage: #dce8d7;
-            --lime: #c6e4a5;
-            --text: #193b2b;
-            --muted: #758378;
-            --white: #ffffff;
-            --border: rgba(18, 61, 44, 0.12);
-            --shadow: 0 20px 60px rgba(14, 48, 33, 0.10);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            font-family: 'DM Sans', sans-serif;
-            background: var(--cream);
-            color: var(--text);
-            overflow-x: hidden;
-        }
-
-        a {
-            text-decoration: none;
-            color: inherit;
-        }
-
-        button {
-            font: inherit;
-        }
-
-        .container {
-            width: min(1160px, 90%);
-            margin: auto;
-        }
-
-        /* NAVBAR */
-
-        .navbar {
-            height: 82px;
-            display: flex;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            background: rgba(247, 246, 239, 0.92);
-            backdrop-filter: blur(16px);
-            border-bottom: 1px solid var(--border);
-        }
-
-        .nav-inner {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-family: 'Manrope', sans-serif;
-            font-size: 23px;
-            font-weight: 800;
-            letter-spacing: -1px;
-        }
-
-        .logo-icon {
-            width: 38px;
-            height: 38px;
-            display: grid;
-            place-items: center;
-            background: var(--forest);
-            color: var(--lime);
-            border-radius: 12px;
-            font-size: 21px;
-        }
-
-        .nav-links {
-            display: flex;
-            align-items: center;
-            gap: 35px;
-        }
-
-        .nav-links a {
-            font-size: 13px;
-            font-weight: 600;
-            color: #52675a;
-            transition: 0.25s;
-        }
-
-        .nav-links a:hover {
-            color: var(--forest);
-        }
-
-        .nav-actions {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 9px;
-            border: none;
-            border-radius: 8px;
-            padding: 13px 21px;
-            font-size: 13px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: 0.25s ease;
-        }
-
-        .btn-primary {
-            background: var(--forest);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background: var(--forest-light);
-            transform: translateY(-2px);
-        }
-
-        .btn-outline {
-            border: 1px solid var(--border);
-            color: var(--forest);
-            background: transparent;
-        }
-
-        .btn-outline:hover {
-            background: var(--sage);
-        }
-
-        .menu-toggle {
-            display: none;
-            background: none;
-            border: none;
-            font-size: 27px;
-            color: var(--forest);
-            cursor: pointer;
-        }
-
-        /* HERO */
-
-        .hero {
-            padding: 88px 0 95px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero::before {
-            content: "";
-            position: absolute;
-            width: 450px;
-            height: 450px;
-            border-radius: 50%;
-            background: rgba(198, 228, 165, 0.20);
-            filter: blur(90px);
-            top: -100px;
-            right: -120px;
-            pointer-events: none;
-        }
-
-        .hero-grid {
-            display: grid;
-            grid-template-columns: 1.05fr 0.95fr;
-            gap: 65px;
-            align-items: center;
-            position: relative;
-            z-index: 1;
-        }
-
-        .eyebrow {
-            display: inline-flex;
-            align-items: center;
-            gap: 9px;
-            color: var(--forest-light);
-            background: var(--sage);
-            border-radius: 30px;
-            padding: 9px 15px;
-            font-size: 11px;
-            font-weight: 800;
-            letter-spacing: 1.1px;
-            text-transform: uppercase;
-            margin-bottom: 25px;
-        }
-
-        .eyebrow span {
-            width: 7px;
-            height: 7px;
-            background: #68a75b;
-            border-radius: 50%;
-        }
-
-        .hero h1 {
-            font-family: 'Manrope', sans-serif;
-            font-size: clamp(43px, 5.4vw, 69px);
-            line-height: 1.08;
-            letter-spacing: -3.5px;
-            font-weight: 800;
-            max-width: 650px;
-        }
-
-        .hero h1 em {
-            color: #6e9c63;
-            font-style: normal;
-        }
-
-        .hero-description {
-            max-width: 490px;
-            color: var(--muted);
-            font-size: 16px;
-            line-height: 1.9;
-            margin: 25px 0 32px;
-        }
-
-        .hero-actions {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            flex-wrap: wrap;
-        }
-
-        .hero-actions .btn {
-            padding: 16px 24px;
-        }
-
-        .hero-note {
-            margin-top: 28px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 12px;
-            color: var(--muted);
-        }
-
-        .hero-note strong {
-            color: var(--forest);
-        }
-
-        /* HERO VISUAL */
-
-        .hero-visual {
-            position: relative;
-            min-height: 430px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .visual-main {
-            width: 100%;
-            height: 405px;
-            border-radius: 25px;
-            overflow: hidden;
-            position: relative;
-            background:
-                linear-gradient(180deg, rgba(8, 43, 27, 0.02), rgba(8, 43, 27, 0.30)),
-                url("https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&w=1100&q=85") center/cover;
-            box-shadow: var(--shadow);
-        }
-
-        .visual-overlay {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(
-                180deg,
-                transparent 45%,
-                rgba(8, 38, 26, 0.75) 100%
-            );
-        }
-
-        .visual-content {
-            position: absolute;
-            bottom: 28px;
-            left: 28px;
-            right: 28px;
-            color: white;
-        }
-
-        .visual-content small {
-            color: var(--lime);
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            font-size: 10px;
-            font-weight: 800;
-        }
-
-        .visual-content h3 {
-            font-family: 'Manrope', sans-serif;
-            font-size: 25px;
-            margin-top: 8px;
-        }
-
-        .visual-content p {
-            color: rgba(255,255,255,0.78);
-            font-size: 12px;
-            margin-top: 5px;
-        }
-
-        .floating-card {
-            position: absolute;
-            background: white;
-            border-radius: 13px;
-            padding: 17px 20px;
-            box-shadow: 0 15px 45px rgba(0,0,0,0.12);
-            animation: float 4s ease-in-out infinite;
-        }
-
-        .floating-card.top {
-            top: 28px;
-            left: -35px;
-        }
-
-        .floating-card.bottom {
-            right: -28px;
-            bottom: 28px;
-            animation-delay: 1.5s;
-        }
-
-        .float-label {
-            font-size: 10px;
-            color: var(--muted);
-            margin-bottom: 5px;
-        }
-
-        .float-value {
-            font-family: 'Manrope', sans-serif;
-            font-size: 21px;
-            font-weight: 800;
-            color: var(--forest);
-        }
-
-        .float-icon {
-            font-size: 19px;
-            margin-bottom: 6px;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-9px); }
-        }
-
-        /* TRUST STRIP */
-
-        .trust-strip {
-            background: var(--forest);
-            color: white;
-            padding: 30px 0;
-        }
-
-        .trust-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 30px;
-        }
-
-        .trust-item {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            justify-content: center;
-        }
-
-        .trust-icon {
-            font-size: 27px;
-        }
-
-        .trust-item h4 {
-            font-size: 14px;
-            margin-bottom: 4px;
-        }
-
-        .trust-item p {
-            font-size: 11px;
-            color: rgba(255,255,255,0.65);
-        }
-
-        /* SECTION COMMON */
-
-        section.content-section {
-            padding: 100px 0;
-        }
-
-        .section-heading {
-            max-width: 640px;
-            margin: 0 auto 55px;
-            text-align: center;
-        }
-
-        .section-label {
-            color: #709567;
-            font-size: 11px;
-            font-weight: 800;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            margin-bottom: 15px;
-        }
-
-        .section-heading h2 {
-            font-family: 'Manrope', sans-serif;
-            font-size: clamp(30px, 4vw, 43px);
-            letter-spacing: -1.7px;
-            line-height: 1.2;
-        }
-
-        .section-heading p {
-            color: var(--muted);
-            font-size: 14px;
-            line-height: 1.8;
-            margin-top: 16px;
-        }
-
-        /* HOW IT WORKS */
-
-        .steps-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 22px;
-        }
-
-        .step-card {
-            background: white;
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 32px 27px;
-            transition: 0.3s;
-        }
-
-        .step-card:hover {
-            transform: translateY(-7px);
-            box-shadow: var(--shadow);
-        }
-
-        .step-number {
-            color: #86a67c;
-            font-family: 'Manrope', sans-serif;
-            font-size: 13px;
-            font-weight: 800;
-            margin-bottom: 25px;
-        }
-
-        .step-icon {
-            width: 55px;
-            height: 55px;
-            background: var(--sage);
-            border-radius: 15px;
-            display: grid;
-            place-items: center;
-            font-size: 25px;
-            margin-bottom: 23px;
-        }
-
-        .step-card h3 {
-            font-family: 'Manrope', sans-serif;
-            font-size: 19px;
-            margin-bottom: 12px;
-        }
-
-        .step-card p {
-            color: var(--muted);
-            font-size: 13px;
-            line-height: 1.8;
-        }
-
-        /* WHY SECTION */
-
-        .why-section {
-            background: #edf1e8;
-        }
-
-        .why-grid {
-            display: grid;
-            grid-template-columns: 0.9fr 1.1fr;
-            gap: 75px;
-            align-items: center;
-        }
-
-        .why-image {
-            height: 450px;
-            border-radius: 22px;
-            background:
-                linear-gradient(180deg, transparent, rgba(12,43,27,0.15)),
-                url("https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?auto=format&fit=crop&w=1000&q=85") center/cover;
-            box-shadow: var(--shadow);
-        }
-
-        .why-content .section-label {
-            text-align: left;
-        }
-
-        .why-content h2 {
-            font-family: 'Manrope', sans-serif;
-            font-size: 40px;
-            line-height: 1.2;
-            letter-spacing: -1.5px;
-            margin-bottom: 20px;
-        }
-
-        .why-content > p {
-            font-size: 14px;
-            line-height: 1.9;
-            color: var(--muted);
-            margin-bottom: 30px;
-        }
-
-        .feature-list {
-            display: grid;
-            gap: 20px;
-        }
-
-        .feature {
-            display: flex;
-            gap: 14px;
-            align-items: flex-start;
-        }
-
-        .feature-check {
-            flex-shrink: 0;
-            width: 27px;
-            height: 27px;
-            background: var(--forest);
-            color: white;
-            border-radius: 50%;
-            display: grid;
-            place-items: center;
-            font-size: 13px;
-        }
-
-        .feature h4 {
-            font-size: 14px;
-            margin-bottom: 5px;
-        }
-
-        .feature p {
-            color: var(--muted);
-            font-size: 12px;
-            line-height: 1.7;
-        }
-
-        /* USER TYPES */
-
-        .user-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 25px;
-        }
-
-        .user-card {
-            padding: 38px;
-            border-radius: 18px;
-            background: white;
-            border: 1px solid var(--border);
-            transition: 0.3s;
-        }
-
-        .user-card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow);
-        }
-
-        .user-card.dark {
-            background: var(--forest);
-            color: white;
-        }
-
-        .user-icon {
-            font-size: 33px;
-            margin-bottom: 25px;
-        }
-
-        .user-card h3 {
-            font-family: 'Manrope', sans-serif;
-            font-size: 25px;
-            margin-bottom: 12px;
-        }
-
-        .user-card p {
-            font-size: 13px;
-            line-height: 1.9;
-            color: var(--muted);
-            margin-bottom: 25px;
-            max-width: 420px;
-        }
-
-        .user-card.dark p {
-            color: rgba(255,255,255,0.7);
-        }
-
-        .user-card.dark .btn {
-            background: var(--lime);
-            color: var(--forest-dark);
-        }
-
-        .user-card.dark .btn:hover {
-            background: white;
-        }
-
-        /* CTA */
-
-        .cta-section {
-            padding: 20px 0 100px;
-        }
-
-        .cta-box {
-            background: var(--forest);
-            color: white;
-            padding: 70px 30px;
-            border-radius: 22px;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .cta-box::before,
-        .cta-box::after {
-            content: "";
-            position: absolute;
-            width: 230px;
-            height: 230px;
-            border: 1px solid rgba(198,228,165,0.17);
-            border-radius: 50%;
-        }
-
-        .cta-box::before {
-            top: -130px;
-            left: -50px;
-        }
-
-        .cta-box::after {
-            bottom: -150px;
-            right: -50px;
-        }
-
-        .cta-box h2 {
-            font-family: 'Manrope', sans-serif;
-            font-size: clamp(30px, 4vw, 44px);
-            letter-spacing: -1.5px;
-            margin-bottom: 15px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .cta-box p {
-            font-size: 14px;
-            line-height: 1.8;
-            color: rgba(255,255,255,0.72);
-            max-width: 540px;
-            margin: 0 auto 28px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .cta-box .btn {
-            background: var(--lime);
-            color: var(--forest);
-            position: relative;
-            z-index: 1;
-        }
-
-        .cta-box .btn:hover {
-            background: white;
-            transform: translateY(-2px);
-        }
-
-        /* FOOTER */
-
-        footer {
-            background: #0b2b20;
-            color: white;
-            padding: 55px 0 25px;
-        }
-
-        .footer-grid {
-            display: grid;
-            grid-template-columns: 1.5fr 1fr 1fr;
-            gap: 50px;
-            padding-bottom: 45px;
-        }
-
-        .footer-brand p {
-            max-width: 330px;
-            font-size: 12px;
-            line-height: 1.9;
-            color: rgba(255,255,255,0.57);
-            margin-top: 17px;
-        }
-
-        .footer-heading {
-            font-size: 12px;
-            color: var(--lime);
-            margin-bottom: 20px;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }
-
-        .footer-links {
-            display: grid;
-            gap: 13px;
-        }
-
-        .footer-links a {
-            font-size: 12px;
-            color: rgba(255,255,255,0.65);
-            transition: 0.2s;
-        }
-
-        .footer-links a:hover {
-            color: var(--lime);
-        }
-
-        .footer-bottom {
-            border-top: 1px solid rgba(255,255,255,0.12);
-            padding-top: 22px;
-            display: flex;
-            justify-content: space-between;
-            gap: 15px;
-            color: rgba(255,255,255,0.48);
-            font-size: 11px;
-        }
-
-        /* ANIMATIONS */
-
-        .reveal {
-            opacity: 0;
-            transform: translateY(25px);
-            transition: opacity 0.7s ease, transform 0.7s ease;
-        }
-
-        .reveal.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* RESPONSIVE */
-
-        @media(max-width: 900px) {
-            .hero-grid {
-                grid-template-columns: 1fr;
-                gap: 40px;
-            }
-
-            .hero-visual {
-                max-width: 600px;
-                width: 100%;
-                margin: auto;
-            }
-
-            .why-grid {
-                grid-template-columns: 1fr;
-                gap: 40px;
-            }
-
-            .why-image {
-                height: 350px;
-            }
-
-            .nav-links {
-                gap: 18px;
-            }
-        }
-
-        @media(max-width: 650px) {
-            .navbar {
-                height: 70px;
-            }
-
-            .menu-toggle {
-                display: block;
-            }
-
-            .nav-links {
-                display: none;
-                position: absolute;
-                top: 70px;
-                left: 0;
-                width: 100%;
-                padding: 25px 5%;
-                background: var(--cream);
-                border-bottom: 1px solid var(--border);
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 23px;
-            }
-
-            .nav-links.active {
-                display: flex;
-            }
-
-            .nav-actions .btn-outline {
-                display: none;
-            }
-
-            .nav-actions .btn {
-                padding: 10px 13px;
-                font-size: 11px;
-            }
-
-            .logo {
-                font-size: 19px;
-            }
-
-            .hero {
-                padding: 65px 0 70px;
-            }
-
-            .hero h1 {
-                font-size: 46px;
-                letter-spacing: -2.5px;
-            }
-
-            .hero-description {
-                font-size: 14px;
-            }
-
-            .hero-visual {
-                min-height: 330px;
-            }
-
-            .visual-main {
-                height: 310px;
-            }
-
-            .floating-card.top {
-                left: -8px;
-            }
-
-            .floating-card.bottom {
-                right: -8px;
-            }
-
-            .trust-grid {
-                grid-template-columns: 1fr;
-                gap: 23px;
-            }
-
-            .trust-item {
-                justify-content: flex-start;
-            }
-
-            section.content-section {
-                padding: 70px 0;
-            }
-
-            .steps-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .user-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .user-card {
-                padding: 28px;
-            }
-
-            .why-content h2 {
-                font-size: 33px;
-            }
-
-            .footer-grid {
-                grid-template-columns: 1fr 1fr;
-                gap: 35px 20px;
-            }
-
-            .footer-brand {
-                grid-column: 1 / -1;
-            }
-
-            .footer-bottom {
-                flex-direction: column;
-            }
-
-            .cta-box {
-                padding: 55px 23px;
-            }
-        }
-
-        @media(prefers-reduced-motion: reduce) {
-            *, *::before, *::after {
-                scroll-behavior: auto !important;
-                animation-duration: 0.01ms !important;
-                transition-duration: 0.01ms !important;
-            }
-
-            .reveal {
-                opacity: 1;
-                transform: none;
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#123D2B">
+  <meta name="description" content="RecycleLink connects waste collectors with authorized recyclers to create a smarter, more transparent recycling ecosystem.">
+  <meta property="og:title" content="RecycleLink | Turn Waste Into Worth">
+  <meta property="og:description" content="Connect recyclable materials with better opportunities, clearer offers, and responsible recycling.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://files.manuscdn.com/search-media/310519664045456097/nPhqdYZvq4W5ZOFbnXIIS7/qx5Csfhug9twrQ64eLxi2W.jpg">
+  <title>RecycleLink | Turn Waste Into Worth</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23123D2B'/%3E%3Cpath d='M20 24h18l-4-6m4 6-4 6M44 40H26l4 6m-4-6 4-6M26 18 18 32l8 14m10-28 10 14-10 14' fill='none' stroke='%23DCE9DF' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <div class="cursor-dot" aria-hidden="true"></div>
+  <div class="cursor-ring" aria-hidden="true"></div>
 
-    <!-- NAVBAR -->
+  <header class="site-header" data-header>
+    <nav class="nav-shell" aria-label="Primary navigation">
+      <a class="brand" href="#home" aria-label="RecycleLink home" data-cursor="link">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 40 40" role="img"><path d="M12 15h13l-3-5m3 5-3 5M28 25H15l3 5m-3-5 3-5M16 10l-6 10 6 10m8-20 7 10-7 10" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+        <span class="brand-name">Recycle<span>Link</span></span>
+      </a>
 
-    <header class="navbar">
-        <div class="container nav-inner">
+      <div class="desktop-nav">
+        <a class="nav-link is-active" href="#home" data-cursor="link">Home</a>
+        <a class="nav-link" href="#how-it-works" data-cursor="link">How it works</a>
+        <a class="nav-link" href="#why-recyclelink" data-cursor="link">Why RecycleLink</a>
+        <a class="nav-link" href="#about" data-cursor="link">About</a>
+      </div>
 
-            <a href="index.html" class="logo">
-                <span class="logo-icon">♻</span>
-                RecycleLink
-            </a>
+      <div class="nav-actions">
+        <a class="login-link" href="login.html" data-cursor="link">Login</a>
+        <a class="button button-small button-light" href="register.html" data-cursor="button">Get started <span aria-hidden="true">↗</span></a>
+        <button class="menu-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu" data-menu-toggle data-cursor="button">
+          <span class="menu-label" data-menu-label>Menu</span>
+          <span class="menu-toggle-icon" aria-hidden="true"><span></span><span></span></span>
+        </button>
+      </div>
+    </nav>
 
-            <nav class="nav-links" id="navLinks">
-                <a href="#home">Home</a>
-                <a href="#how-it-works">How It Works</a>
-                <a href="#why-us">Why RecycleLink</a>
-                <a href="#join">Join Us</a>
-            </nav>
-
-            <div class="nav-actions">
-                <a href="login.html" class="btn btn-outline">Login</a>
-                <a href="register.html" class="btn btn-primary">Get Started ↗</a>
-                <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation" aria-expanded="false">☰</button>
-            </div>
-
+    <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+      <div class="mobile-menu-layer layer-sage" aria-hidden="true"></div>
+      <div class="mobile-menu-layer layer-green" aria-hidden="true"></div>
+      <div class="mobile-menu-inner">
+        <p class="eyebrow eyebrow-light">Explore RecycleLink</p>
+        <div class="mobile-links">
+          <a href="#home" data-menu-link>Home <span>01</span></a>
+          <a href="#how-it-works" data-menu-link>How it works <span>02</span></a>
+          <a href="#why-recyclelink" data-menu-link>Why RecycleLink <span>03</span></a>
+          <a href="#about" data-menu-link>About <span>04</span></a>
+          <a href="login.html" data-menu-link>Login <span>05</span></a>
         </div>
-    </header>
-
-
-    <main>
-
-        <!-- HERO -->
-
-        <section class="hero" id="home">
-            <div class="container hero-grid">
-
-                <div class="hero-content reveal">
-
-                    <div class="eyebrow">
-                        <span></span>
-                        Building a circular future
-                    </div>
-
-                    <h1>
-                        Turn Waste<br>
-                        Into <em>Worth.</em>
-                    </h1>
-
-                    <p class="hero-description">
-                        A smarter connection between waste collectors
-                        and recyclers. Discover opportunities, compare
-                        offers and give recyclable materials a second life.
-                    </p>
-
-                    <div class="hero-actions">
-                        <a href="register.html" class="btn btn-primary">
-                            Start Recycling <span>↗</span>
-                        </a>
-
-                        <a href="#how-it-works" class="btn btn-outline">
-                            Explore Platform ↓
-                        </a>
-                    </div>
-
-                    <div class="hero-note">
-                        <span>🌱</span>
-                        <span><strong>One connection at a time.</strong> A cleaner tomorrow starts today.</span>
-                    </div>
-
-                </div>
-
-                <div class="hero-visual reveal">
-
-                    <div class="visual-main">
-                        <div class="visual-overlay"></div>
-
-                        <div class="visual-content">
-                            <small>Small actions. Meaningful change.</small>
-                            <h3>Waste deserves a second life.</h3>
-                            <p>Connect. Recover. Reuse.</p>
-                        </div>
-                    </div>
-
-                    <div class="floating-card top">
-                        <div class="float-icon">♻️</div>
-                        <div class="float-label">A better waste journey</div>
-                        <div class="float-value">Circular Economy</div>
-                    </div>
-
-                    <div class="floating-card bottom">
-                        <div class="float-label">Built around</div>
-                        <div class="float-value">Direct Connections ↗</div>
-                    </div>
-
-                </div>
-
-            </div>
-        </section>
-
-
-        <!-- TRUST STRIP -->
-
-        <section class="trust-strip">
-            <div class="container trust-grid">
-
-                <div class="trust-item">
-                    <div class="trust-icon">🤝</div>
-                    <div>
-                        <h4>Direct Connections</h4>
-                        <p>Collectors meet recyclers</p>
-                    </div>
-                </div>
-
-                <div class="trust-item">
-                    <div class="trust-icon">💰</div>
-                    <div>
-                        <h4>Competitive Offers</h4>
-                        <p>Compare prices before deciding</p>
-                    </div>
-                </div>
-
-                <div class="trust-item">
-                    <div class="trust-icon">🌍</div>
-                    <div>
-                        <h4>Responsible Recycling</h4>
-                        <p>Resources stay in circulation</p>
-                    </div>
-                </div>
-
-            </div>
-        </section>
-
-
-        <!-- HOW IT WORKS -->
-
-        <section class="content-section" id="how-it-works">
-
-            <div class="container">
-
-                <div class="section-heading reveal">
-                    <div class="section-label">Simple by design</div>
-                    <h2>A better way to connect the recycling ecosystem.</h2>
-                    <p>
-                        RecycleLink makes the journey from recyclable
-                        waste to the right recycler simpler and more transparent.
-                    </p>
-                </div>
-
-                <div class="steps-grid">
-
-                    <article class="step-card reveal">
-                        <div class="step-number">01 / LIST</div>
-                        <div class="step-icon">📦</div>
-                        <h3>List Your Materials</h3>
-                        <p>
-                            Collectors can publish available recyclable
-                            materials with quantity, description and location.
-                        </p>
-                    </article>
-
-                    <article class="step-card reveal">
-                        <div class="step-number">02 / CONNECT</div>
-                        <div class="step-icon">🔎</div>
-                        <h3>Discover & Receive Offers</h3>
-                        <p>
-                            Recyclers explore available listings and submit
-                            their offers directly to collectors.
-                        </p>
-                    </article>
-
-                    <article class="step-card reveal">
-                        <div class="step-number">03 / RECYCLE</div>
-                        <div class="step-icon">🌱</div>
-                        <h3>Choose & Complete</h3>
-                        <p>
-                            Collectors review offers, choose a suitable
-                            recycler and coordinate the material handover.
-                        </p>
-                    </article>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- WHY RECYCLELINK -->
-
-        <section class="content-section why-section" id="why-us">
-
-            <div class="container why-grid">
-
-                <div class="why-image reveal"></div>
-
-                <div class="why-content reveal">
-
-                    <div class="section-label">Why RecycleLink</div>
-
-                    <h2>Making recycling more connected, transparent and accessible.</h2>
-
-                    <p>
-                        Valuable recyclable materials can go to waste when
-                        collectors and recyclers struggle to find each other.
-                        RecycleLink aims to bridge that gap through a
-                        straightforward digital marketplace.
-                    </p>
-
-                    <div class="feature-list">
-
-                        <div class="feature">
-                            <div class="feature-check">✓</div>
-                            <div>
-                                <h4>Transparent Offers</h4>
-                                <p>Review offers from recyclers before making a decision.</p>
-                            </div>
-                        </div>
-
-                        <div class="feature">
-                            <div class="feature-check">✓</div>
-                            <div>
-                                <h4>One Connected Platform</h4>
-                                <p>Bring collectors and recycling facilities together in one place.</p>
-                            </div>
-                        </div>
-
-                        <div class="feature">
-                            <div class="feature-check">✓</div>
-                            <div>
-                                <h4>Better Resource Recovery</h4>
-                                <p>Help recyclable materials find their way back into the resource cycle.</p>
-                            </div>
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- JOIN AS COLLECTOR OR RECYCLER -->
-
-        <section class="content-section" id="join">
-
-            <div class="container">
-
-                <div class="section-heading reveal">
-                    <div class="section-label">Find your place</div>
-                    <h2>Two sides. One connected ecosystem.</h2>
-                    <p>
-                        Whether you collect recyclable materials or
-                        operate a recycling facility, there is a place for you.
-                    </p>
-                </div>
-
-                <div class="user-grid">
-
-                    <article class="user-card reveal">
-
-                        <div class="user-icon">♻️</div>
-
-                        <h3>For Collectors</h3>
-
-                        <p>
-                            Turn your collected recyclable materials into
-                            opportunities. Publish listings, receive offers
-                            and choose the recycler that works for you.
-                        </p>
-
-                        <a href="register.html?role=collector" class="btn btn-primary">
-                            Join as Collector ↗
-                        </a>
-
-                    </article>
-
-                    <article class="user-card dark reveal">
-
-                        <div class="user-icon">🏭</div>
-
-                        <h3>For Recyclers</h3>
-
-                        <p>
-                            Discover available recyclable materials,
-                            connect with collectors and submit competitive
-                            offers for suitable listings.
-                        </p>
-
-                        <a href="register.html?role=recycler" class="btn">
-                            Join as Recycler ↗
-                        </a>
-
-                    </article>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- FINAL CTA -->
-
-        <section class="cta-section">
-            <div class="container">
-
-                <div class="cta-box reveal">
-
-                    <h2>Let's make waste worth something.</h2>
-
-                    <p>
-                        Every material has potential. Every connection
-                        creates an opportunity. Be part of a more connected
-                        recycling ecosystem.
-                    </p>
-
-                    <a href="register.html" class="btn">
-                        Get Started with RecycleLink ↗
-                    </a>
-
-                </div>
-
-            </div>
-        </section>
-
-    </main>
-
-
-    <!-- FOOTER -->
-
-    <footer>
-
-        <div class="container">
-
-            <div class="footer-grid">
-
-                <div class="footer-brand">
-
-                    <a href="index.html" class="logo">
-                        <span class="logo-icon">♻</span>
-                        RecycleLink
-                    </a>
-
-                    <p>
-                        Connecting waste collectors and recyclers through
-                        a smarter, more transparent digital marketplace.
-                        Together, we can help build a circular future.
-                    </p>
-
-                </div>
-
-                <div>
-                    <h4 class="footer-heading">Explore</h4>
-                    <div class="footer-links">
-                        <a href="#home">Home</a>
-                        <a href="#how-it-works">How It Works</a>
-                        <a href="#why-us">Why RecycleLink</a>
-                        <a href="#join">Join Us</a>
-                    </div>
-                </div>
-
-                <div>
-                    <h4 class="footer-heading">Account</h4>
-                    <div class="footer-links">
-                        <a href="login.html">Login</a>
-                        <a href="register.html">Register</a>
-                    </div>
-                </div>
-
-            </div>
-
-            <div class="footer-bottom">
-                <p>© <span id="year"></span> RecycleLink. All rights reserved.</p>
-                <p>Turn Waste Into Worth. 🌱</p>
-            </div>
-
+        <a class="button button-light mobile-cta" href="register.html" data-menu-link data-cursor="button">Get started <span aria-hidden="true">↗</span></a>
+        <p class="mobile-menu-note">Connect materials, people, and better possibilities.</p>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <section class="hero" id="home" aria-labelledby="hero-title">
+      <div class="hero-media" data-parallax>
+        <img src="https://files.manuscdn.com/search-media/310519664045456097/nPhqdYZvq4W5ZOFbnXIIS7/qx5Csfhug9twrQ64eLxi2W.jpg" alt="A modern recycling facility with green sorting machinery and conveyor belts" fetchpriority="high">
+      </div>
+      <div class="hero-overlay"></div>
+      <div class="hero-grid"></div>
+      <div class="hero-orbit orbit-one" aria-hidden="true"></div>
+      <div class="hero-orbit orbit-two" aria-hidden="true"></div>
+
+      <div class="container hero-content">
+        <div class="hero-copy reveal reveal-up">
+          <p class="eyebrow eyebrow-light"><span class="eyebrow-line"></span> The circular economy, connected</p>
+          <h1 id="hero-title" class="heading-1">Turn waste<br><em>into worth.</em></h1>
+          <p class="hero-subtitle">Connecting waste collectors with authorized recyclers to create a smarter, more transparent recycling ecosystem.</p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="register.html" data-cursor="button">Get started <span aria-hidden="true">↗</span></a>
+            <a class="text-link text-link-light" href="#how-it-works" data-cursor="link"><span class="play-icon" aria-hidden="true">▶</span> Explore how it works</a>
+          </div>
         </div>
 
-    </footer>
+        <div class="hero-aside reveal reveal-up" data-delay="150">
+          <div class="hero-aside-line"></div>
+          <p>Good materials deserve a clear next step.</p>
+          <span class="hero-aside-index">01 <span>/ 06</span></span>
+        </div>
+      </div>
 
+      <div class="hero-bottom container">
+        <div class="scroll-note"><span class="scroll-line"></span> Scroll to explore</div>
+        <div class="hero-proof"><span class="proof-dot"></span> Built for the people moving materials forward</div>
+      </div>
+    </section>
 
-    <!-- VANILLA JAVASCRIPT -->
+    <section class="tagline-section section-cream" aria-label="RecycleLink core promise">
+      <div class="container tagline-wrap reveal reveal-up">
+        <p class="eyebrow">A better loop starts here</p>
+        <h2 class="tagline" data-word-reveal><span class="line">When every material has a market,</span><br><span class="line">every hand in the loop has more value.</span></h2>
+        <div class="tagline-meta"><span>RecycleLink / 2026</span><span>Connecting value at the source</span></div>
+      </div>
+    </section>
 
-    <script>
+    <section class="section section-cream process-section" id="how-it-works" aria-labelledby="process-title">
+      <div class="container">
+        <div class="section-heading split-heading reveal reveal-up">
+          <div>
+            <p class="eyebrow">How it works</p>
+            <h2 id="process-title" class="heading-2">From collection<br><span>to connection.</span></h2>
+          </div>
+          <p class="section-intro">RecycleLink keeps the path simple. List what you have, see what it is worth, and choose the right partner to move it forward.</p>
+        </div>
 
-        // Mobile navigation
+        <div class="process-list">
+          <article class="process-item reveal reveal-up" data-delay="0">
+            <div class="process-number">01</div>
+            <div class="process-icon" aria-hidden="true"><svg viewBox="0 0 40 40"><path d="M7 26.5 20 34l13-7.5V12L20 5 7 12v14.5Z"/><path d="m7 12 13 7.5L33 12M20 19.5V34"/></svg></div>
+            <div class="process-copy"><h3 class="heading-5">List your waste</h3><p>Share the material, quantity, and location. A clear listing gives every recyclable item a better chance of being found.</p></div>
+            <span class="process-arrow" aria-hidden="true">↗</span>
+          </article>
+          <article class="process-item reveal reveal-up" data-delay="100">
+            <div class="process-number">02</div>
+            <div class="process-icon" aria-hidden="true"><svg viewBox="0 0 40 40"><path d="M8 28V14m0 0 5 5m-5-5-5 5M32 12v14m0 0-5-5m5 5 5-5"/><path d="M14 12h12M14 28h12"/></svg></div>
+            <div class="process-copy"><h3 class="heading-5">Receive offers</h3><p>Authorized recyclers discover available listings and submit competitive offers you can compare with confidence.</p></div>
+            <span class="process-arrow" aria-hidden="true">↗</span>
+          </article>
+          <article class="process-item reveal reveal-up" data-delay="200">
+            <div class="process-number">03</div>
+            <div class="process-icon" aria-hidden="true"><svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="12"/><path d="m14 20 4 4 8-8M20 8v-3M20 35v-3"/></svg></div>
+            <div class="process-copy"><h3 class="heading-5">Connect and recycle</h3><p>Choose the offer that works for you, arrange the handover, and keep useful material in circulation.</p></div>
+            <span class="process-arrow" aria-hidden="true">↗</span>
+          </article>
+        </div>
+      </div>
+    </section>
 
-        const menuToggle = document.getElementById("menuToggle");
-        const navLinks = document.getElementById("navLinks");
+    <section class="section dark-section why-section" id="why-recyclelink" aria-labelledby="why-title">
+      <div class="container why-grid">
+        <div class="why-sticky reveal reveal-up">
+          <p class="eyebrow eyebrow-light">Why RecycleLink</p>
+          <h2 id="why-title" class="heading-2 heading-light">More visibility.<br><em>More possibility.</em></h2>
+          <p>Waste is not worthless. It is a resource waiting for a clearer route, a fairer conversation, and the right connection.</p>
+          <a class="text-link text-link-light" href="#join" data-cursor="link">Join the ecosystem <span aria-hidden="true">↗</span></a>
+        </div>
+        <div class="benefit-stack">
+          <article class="benefit-card reveal reveal-right">
+            <span class="benefit-index">01 / Direct connection</span>
+            <h3 class="heading-4">Fewer layers between the source and the recycler.</h3>
+            <p>Bring collectors and authorized recyclers into the same conversation so opportunities are easier to find and act on.</p>
+          </article>
+          <article class="benefit-card reveal reveal-right" data-delay="100">
+            <span class="benefit-index">02 / Clear offers</span>
+            <h3 class="heading-4">A more transparent way to compare value.</h3>
+            <p>Competitive offers make the next step visible, helping collectors make informed choices for their materials.</p>
+          </article>
+          <article class="benefit-card reveal reveal-right" data-delay="200">
+            <span class="benefit-index">03 / Better outcomes</span>
+            <h3 class="heading-4">A stronger role for the people who keep materials moving.</h3>
+            <p>Organized access creates better opportunities for informal waste collectors and supports responsible recycling.</p>
+          </article>
+        </div>
+      </div>
+    </section>
 
-        menuToggle.addEventListener("click", () => {
-            const isOpen = navLinks.classList.toggle("active");
-            menuToggle.setAttribute("aria-expanded", String(isOpen));
-            menuToggle.textContent = isOpen ? "✕" : "☰";
-        });
+    <section class="section section-sage impact-section" id="about" aria-labelledby="impact-title">
+      <div class="container">
+        <div class="impact-top reveal reveal-up">
+          <div>
+            <p class="eyebrow">A visible impact</p>
+            <h2 id="impact-title" class="heading-2">Make the loop<br><span>easier to see.</span></h2>
+          </div>
+          <p class="section-intro">The recycling ecosystem is already in motion. RecycleLink helps make the handoffs more organized, the opportunities more visible, and the next step easier to take.</p>
+        </div>
 
-        // Close mobile navigation after clicking a link
+        <div class="impact-layout">
+          <figure class="impact-image reveal reveal-left">
+            <div class="image-frame"><img src="https://files.manuscdn.com/search-media/310519664045456097/nPhqdYZvq4W5ZOFbnXIIS7/TQ79g98fxhHNhXiub4B3rC.jpg" alt="Green conveyor belts moving sorted materials inside a recycling plant" loading="lazy"></div>
+            <figcaption><span>Inside the loop</span><span>Materials in motion</span></figcaption>
+          </figure>
+          <div class="impact-points">
+            <div class="impact-intro reveal reveal-up"><span class="impact-marker">Impact / 01</span><p>These are the outcomes we are building toward, not platform statistics.</p></div>
+            <article class="impact-point reveal reveal-up"><span class="impact-icon">↗</span><div><h3 class="heading-5">More materials find the right route</h3><p>Useful resources stay visible long enough to reach the people who can put them back to work.</p></div></article>
+            <article class="impact-point reveal reveal-up" data-delay="100"><span class="impact-icon">↗</span><div><h3 class="heading-5">More people can participate</h3><p>A clearer marketplace helps informal collectors take part with more confidence and choice.</p></div></article>
+            <article class="impact-point reveal reveal-up" data-delay="200"><span class="impact-icon">↗</span><div><h3 class="heading-5">More recycling becomes accountable</h3><p>Direct connections encourage responsible handovers and a more organized circular economy.</p></div></article>
+          </div>
+        </div>
+      </div>
+    </section>
 
-        document.querySelectorAll(".nav-links a").forEach(link => {
-            link.addEventListener("click", () => {
-                navLinks.classList.remove("active");
-                menuToggle.setAttribute("aria-expanded", "false");
-                menuToggle.textContent = "☰";
-            });
-        });
+    <section class="section section-cream join-section" id="join" aria-labelledby="join-title">
+      <div class="container">
+        <div class="section-heading join-heading reveal reveal-up">
+          <div><p class="eyebrow">Join the ecosystem</p><h2 id="join-title" class="heading-2">There is a place<br><span>for your next step.</span></h2></div>
+          <p class="section-intro">Whether you collect recyclable materials or are ready to source them, RecycleLink is built to make the connection clearer.</p>
+        </div>
+        <div class="role-grid">
+          <article class="role-card role-collector reveal reveal-left">
+            <div class="role-card-top"><span class="role-label">For waste collectors</span><span class="role-arrow">↗</span></div>
+            <div class="role-copy"><h3 class="heading-3">Turn your<br>recyclable waste<br><em>into an opportunity.</em></h3><p>List what you have, compare offers, and connect with a recycler that fits.</p><a class="button button-primary" href="register.html?role=collector" data-cursor="button">Join as a collector <span aria-hidden="true">↗</span></a></div>
+          </article>
+          <article class="role-card role-recycler reveal reveal-right">
+            <div class="role-card-top"><span class="role-label">For authorized recyclers</span><span class="role-arrow">↗</span></div>
+            <div class="role-copy"><h3 class="heading-3">Find the materials<br>that keep your<br><em>work moving.</em></h3><p>Discover listings, make competitive offers, and connect with suppliers.</p><a class="button button-outline" href="register.html?role=recycler" data-cursor="button">Join as a recycler <span aria-hidden="true">↗</span></a></div>
+          </article>
+        </div>
+      </div>
+    </section>
 
-        // Dynamic footer year
+    <section class="final-cta" aria-labelledby="cta-title">
+      <div class="final-cta-image" data-parallax><img src="https://files.manuscdn.com/search-media/310519664045456097/nPhqdYZvq4W5ZOFbnXIIS7/ZLV5hzeFTerk8kwnq9hH2Q.jpg" alt="Sorted recycling bins showing materials ready for the next stage" loading="lazy"></div>
+      <div class="final-cta-overlay"></div>
+      <div class="container final-cta-content reveal reveal-up">
+        <p class="eyebrow eyebrow-light">The next chapter is shared</p>
+        <h2 id="cta-title" class="heading-2 heading-light">Small actions.<br><em>Circular futures.</em></h2>
+        <p>Start with what is already in your hands. Build a clearer route for it, and join the people making the loop work better.</p>
+        <a class="button button-primary" href="register.html" data-cursor="button">Get started <span aria-hidden="true">↗</span></a>
+      </div>
+    </section>
+  </main>
 
-        document.getElementById("year").textContent =
-            new Date().getFullYear();
+  <footer class="site-footer">
+    <div class="container footer-main">
+      <div class="footer-brand"><a class="brand brand-footer" href="#home" data-cursor="link"><span class="brand-mark"><svg viewBox="0 0 40 40" aria-hidden="true"><path d="M12 15h13l-3-5m3 5-3 5M28 25H15l3 5m-3-5 3-5M16 10l-6 10 6 10m8-20 7 10-7 10" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="brand-name">Recycle<span>Link</span></span></a><p>Connecting materials, people, and better possibilities for a more circular future.</p></div>
+      <div class="footer-links"><div><p class="footer-label">Explore</p><a href="#how-it-works" data-cursor="link">How it works</a><a href="#why-recyclelink" data-cursor="link">Why RecycleLink</a><a href="#about" data-cursor="link">About</a></div><div><p class="footer-label">Account</p><a href="login.html" data-cursor="link">Login</a><a href="register.html" data-cursor="link">Create an account</a><a href="register.html?role=collector" data-cursor="link">Join as collector</a></div></div>
+    </div>
+    <div class="container footer-bottom"><span>© 2026 RecycleLink. Built for a better loop.</span><div><a href="privacy.html" data-cursor="link">Privacy</a><a href="terms.html" data-cursor="link">Terms</a></div></div>
+  </footer>
 
-        // Scroll reveal animations
-
-        const revealElements = document.querySelectorAll(".reveal");
-
-        if ("IntersectionObserver" in window) {
-            const observer = new IntersectionObserver((entries, obs) => {
-
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add("visible");
-                        obs.unobserve(entry.target);
-                    }
-                });
-
-            }, {
-                threshold: 0.12
-            });
-
-            revealElements.forEach(element => {
-                observer.observe(element);
-            });
-        } else {
-            revealElements.forEach(element => {
-                element.classList.add("visible");
-            });
-        }
-
-    </script>
-
+  <script src="script.js" defer></script>
 </body>
 </html>
