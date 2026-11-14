@@ -1,0 +1,52 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recycler Marketplace | RecycleLink</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <main class="auth-container">
+    <section class="auth-card" style="max-width: 950px;">
+
+      <a href="index.html" class="brand">Recycle<span>Link</span></a>
+
+      <p class="eyebrow">RECYCLER WORKSPACE</p>
+      <h1 id="welcomeHeading">Recycler Marketplace</h1>
+      <p class="subtitle">Discover recyclable materials and connect with collectors.</p>
+
+      <div class="verification-notice" id="verificationNotice">
+        Checking facility status...
+      </div>
+
+      <div class="dashboard-section">
+        <h2>Available waste listings</h2>
+        <p class="subtitle">Explore materials posted by collectors.</p>
+        <div id="marketplace">
+          <p>Loading available listings...</p>
+        </div>
+      </div>
+
+      <div class="dashboard-section">
+        <h2>Your submitted offers</h2>
+        <div id="myOffers">
+          <p>Loading your offers...</p>
+        </div>
+      </div>
+
+      <button type="button" id="logoutBtn" style="background:#555;">
+        Logout
+      </button>
+
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/config.js"></script>
+  <script src="js/recycler.js"></script>
+
+</body>
+</html>

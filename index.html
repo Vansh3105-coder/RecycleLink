@@ -1,0 +1,1367 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#123d2c">
+
+    <title>RecycleLink — Turn Waste Into Worth</title>
+
+    <meta name="description" content="RecycleLink connects waste collectors with authorized recyclers. List recyclable materials, receive competitive offers and build a cleaner future.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --forest: #123d2c;
+            --forest-dark: #0b2b20;
+            --forest-light: #20563e;
+            --cream: #f7f6ef;
+            --cream-dark: #eeeee3;
+            --sage: #dce8d7;
+            --lime: #c6e4a5;
+            --text: #193b2b;
+            --muted: #758378;
+            --white: #ffffff;
+            --border: rgba(18, 61, 44, 0.12);
+            --shadow: 0 20px 60px rgba(14, 48, 33, 0.10);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--cream);
+            color: var(--text);
+            overflow-x: hidden;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        button {
+            font: inherit;
+        }
+
+        .container {
+            width: min(1160px, 90%);
+            margin: auto;
+        }
+
+        /* NAVBAR */
+
+        .navbar {
+            height: 82px;
+            display: flex;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: rgba(247, 246, 239, 0.92);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'Manrope', sans-serif;
+            font-size: 23px;
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        .logo-icon {
+            width: 38px;
+            height: 38px;
+            display: grid;
+            place-items: center;
+            background: var(--forest);
+            color: var(--lime);
+            border-radius: 12px;
+            font-size: 21px;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 35px;
+        }
+
+        .nav-links a {
+            font-size: 13px;
+            font-weight: 600;
+            color: #52675a;
+            transition: 0.25s;
+        }
+
+        .nav-links a:hover {
+            color: var(--forest);
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+            border: none;
+            border-radius: 8px;
+            padding: 13px 21px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.25s ease;
+        }
+
+        .btn-primary {
+            background: var(--forest);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--forest-light);
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            border: 1px solid var(--border);
+            color: var(--forest);
+            background: transparent;
+        }
+
+        .btn-outline:hover {
+            background: var(--sage);
+        }
+
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 27px;
+            color: var(--forest);
+            cursor: pointer;
+        }
+
+        /* HERO */
+
+        .hero {
+            padding: 88px 0 95px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            width: 450px;
+            height: 450px;
+            border-radius: 50%;
+            background: rgba(198, 228, 165, 0.20);
+            filter: blur(90px);
+            top: -100px;
+            right: -120px;
+            pointer-events: none;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1.05fr 0.95fr;
+            gap: 65px;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            color: var(--forest-light);
+            background: var(--sage);
+            border-radius: 30px;
+            padding: 9px 15px;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 1.1px;
+            text-transform: uppercase;
+            margin-bottom: 25px;
+        }
+
+        .eyebrow span {
+            width: 7px;
+            height: 7px;
+            background: #68a75b;
+            border-radius: 50%;
+        }
+
+        .hero h1 {
+            font-family: 'Manrope', sans-serif;
+            font-size: clamp(43px, 5.4vw, 69px);
+            line-height: 1.08;
+            letter-spacing: -3.5px;
+            font-weight: 800;
+            max-width: 650px;
+        }
+
+        .hero h1 em {
+            color: #6e9c63;
+            font-style: normal;
+        }
+
+        .hero-description {
+            max-width: 490px;
+            color: var(--muted);
+            font-size: 16px;
+            line-height: 1.9;
+            margin: 25px 0 32px;
+        }
+
+        .hero-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .hero-actions .btn {
+            padding: 16px 24px;
+        }
+
+        .hero-note {
+            margin-top: 28px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        .hero-note strong {
+            color: var(--forest);
+        }
+
+        /* HERO VISUAL */
+
+        .hero-visual {
+            position: relative;
+            min-height: 430px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .visual-main {
+            width: 100%;
+            height: 405px;
+            border-radius: 25px;
+            overflow: hidden;
+            position: relative;
+            background:
+                linear-gradient(180deg, rgba(8, 43, 27, 0.02), rgba(8, 43, 27, 0.30)),
+                url("https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&w=1100&q=85") center/cover;
+            box-shadow: var(--shadow);
+        }
+
+        .visual-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                180deg,
+                transparent 45%,
+                rgba(8, 38, 26, 0.75) 100%
+            );
+        }
+
+        .visual-content {
+            position: absolute;
+            bottom: 28px;
+            left: 28px;
+            right: 28px;
+            color: white;
+        }
+
+        .visual-content small {
+            color: var(--lime);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-size: 10px;
+            font-weight: 800;
+        }
+
+        .visual-content h3 {
+            font-family: 'Manrope', sans-serif;
+            font-size: 25px;
+            margin-top: 8px;
+        }
+
+        .visual-content p {
+            color: rgba(255,255,255,0.78);
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        .floating-card {
+            position: absolute;
+            background: white;
+            border-radius: 13px;
+            padding: 17px 20px;
+            box-shadow: 0 15px 45px rgba(0,0,0,0.12);
+            animation: float 4s ease-in-out infinite;
+        }
+
+        .floating-card.top {
+            top: 28px;
+            left: -35px;
+        }
+
+        .floating-card.bottom {
+            right: -28px;
+            bottom: 28px;
+            animation-delay: 1.5s;
+        }
+
+        .float-label {
+            font-size: 10px;
+            color: var(--muted);
+            margin-bottom: 5px;
+        }
+
+        .float-value {
+            font-family: 'Manrope', sans-serif;
+            font-size: 21px;
+            font-weight: 800;
+            color: var(--forest);
+        }
+
+        .float-icon {
+            font-size: 19px;
+            margin-bottom: 6px;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-9px); }
+        }
+
+        /* TRUST STRIP */
+
+        .trust-strip {
+            background: var(--forest);
+            color: white;
+            padding: 30px 0;
+        }
+
+        .trust-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+
+        .trust-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .trust-icon {
+            font-size: 27px;
+        }
+
+        .trust-item h4 {
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+
+        .trust-item p {
+            font-size: 11px;
+            color: rgba(255,255,255,0.65);
+        }
+
+        /* SECTION COMMON */
+
+        section.content-section {
+            padding: 100px 0;
+        }
+
+        .section-heading {
+            max-width: 640px;
+            margin: 0 auto 55px;
+            text-align: center;
+        }
+
+        .section-label {
+            color: #709567;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+        }
+
+        .section-heading h2 {
+            font-family: 'Manrope', sans-serif;
+            font-size: clamp(30px, 4vw, 43px);
+            letter-spacing: -1.7px;
+            line-height: 1.2;
+        }
+
+        .section-heading p {
+            color: var(--muted);
+            font-size: 14px;
+            line-height: 1.8;
+            margin-top: 16px;
+        }
+
+        /* HOW IT WORKS */
+
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 22px;
+        }
+
+        .step-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 32px 27px;
+            transition: 0.3s;
+        }
+
+        .step-card:hover {
+            transform: translateY(-7px);
+            box-shadow: var(--shadow);
+        }
+
+        .step-number {
+            color: #86a67c;
+            font-family: 'Manrope', sans-serif;
+            font-size: 13px;
+            font-weight: 800;
+            margin-bottom: 25px;
+        }
+
+        .step-icon {
+            width: 55px;
+            height: 55px;
+            background: var(--sage);
+            border-radius: 15px;
+            display: grid;
+            place-items: center;
+            font-size: 25px;
+            margin-bottom: 23px;
+        }
+
+        .step-card h3 {
+            font-family: 'Manrope', sans-serif;
+            font-size: 19px;
+            margin-bottom: 12px;
+        }
+
+        .step-card p {
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.8;
+        }
+
+        /* WHY SECTION */
+
+        .why-section {
+            background: #edf1e8;
+        }
+
+        .why-grid {
+            display: grid;
+            grid-template-columns: 0.9fr 1.1fr;
+            gap: 75px;
+            align-items: center;
+        }
+
+        .why-image {
+            height: 450px;
+            border-radius: 22px;
+            background:
+                linear-gradient(180deg, transparent, rgba(12,43,27,0.15)),
+                url("https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?auto=format&fit=crop&w=1000&q=85") center/cover;
+            box-shadow: var(--shadow);
+        }
+
+        .why-content .section-label {
+            text-align: left;
+        }
+
+        .why-content h2 {
+            font-family: 'Manrope', sans-serif;
+            font-size: 40px;
+            line-height: 1.2;
+            letter-spacing: -1.5px;
+            margin-bottom: 20px;
+        }
+
+        .why-content > p {
+            font-size: 14px;
+            line-height: 1.9;
+            color: var(--muted);
+            margin-bottom: 30px;
+        }
+
+        .feature-list {
+            display: grid;
+            gap: 20px;
+        }
+
+        .feature {
+            display: flex;
+            gap: 14px;
+            align-items: flex-start;
+        }
+
+        .feature-check {
+            flex-shrink: 0;
+            width: 27px;
+            height: 27px;
+            background: var(--forest);
+            color: white;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            font-size: 13px;
+        }
+
+        .feature h4 {
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .feature p {
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.7;
+        }
+
+        /* USER TYPES */
+
+        .user-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+
+        .user-card {
+            padding: 38px;
+            border-radius: 18px;
+            background: white;
+            border: 1px solid var(--border);
+            transition: 0.3s;
+        }
+
+        .user-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+        }
+
+        .user-card.dark {
+            background: var(--forest);
+            color: white;
+        }
+
+        .user-icon {
+            font-size: 33px;
+            margin-bottom: 25px;
+        }
+
+        .user-card h3 {
+            font-family: 'Manrope', sans-serif;
+            font-size: 25px;
+            margin-bottom: 12px;
+        }
+
+        .user-card p {
+            font-size: 13px;
+            line-height: 1.9;
+            color: var(--muted);
+            margin-bottom: 25px;
+            max-width: 420px;
+        }
+
+        .user-card.dark p {
+            color: rgba(255,255,255,0.7);
+        }
+
+        .user-card.dark .btn {
+            background: var(--lime);
+            color: var(--forest-dark);
+        }
+
+        .user-card.dark .btn:hover {
+            background: white;
+        }
+
+        /* CTA */
+
+        .cta-section {
+            padding: 20px 0 100px;
+        }
+
+        .cta-box {
+            background: var(--forest);
+            color: white;
+            padding: 70px 30px;
+            border-radius: 22px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-box::before,
+        .cta-box::after {
+            content: "";
+            position: absolute;
+            width: 230px;
+            height: 230px;
+            border: 1px solid rgba(198,228,165,0.17);
+            border-radius: 50%;
+        }
+
+        .cta-box::before {
+            top: -130px;
+            left: -50px;
+        }
+
+        .cta-box::after {
+            bottom: -150px;
+            right: -50px;
+        }
+
+        .cta-box h2 {
+            font-family: 'Manrope', sans-serif;
+            font-size: clamp(30px, 4vw, 44px);
+            letter-spacing: -1.5px;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-box p {
+            font-size: 14px;
+            line-height: 1.8;
+            color: rgba(255,255,255,0.72);
+            max-width: 540px;
+            margin: 0 auto 28px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-box .btn {
+            background: var(--lime);
+            color: var(--forest);
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-box .btn:hover {
+            background: white;
+            transform: translateY(-2px);
+        }
+
+        /* FOOTER */
+
+        footer {
+            background: #0b2b20;
+            color: white;
+            padding: 55px 0 25px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr 1fr;
+            gap: 50px;
+            padding-bottom: 45px;
+        }
+
+        .footer-brand p {
+            max-width: 330px;
+            font-size: 12px;
+            line-height: 1.9;
+            color: rgba(255,255,255,0.57);
+            margin-top: 17px;
+        }
+
+        .footer-heading {
+            font-size: 12px;
+            color: var(--lime);
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .footer-links {
+            display: grid;
+            gap: 13px;
+        }
+
+        .footer-links a {
+            font-size: 12px;
+            color: rgba(255,255,255,0.65);
+            transition: 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: var(--lime);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,0.12);
+            padding-top: 22px;
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            color: rgba(255,255,255,0.48);
+            font-size: 11px;
+        }
+
+        /* ANIMATIONS */
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(25px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* RESPONSIVE */
+
+        @media(max-width: 900px) {
+            .hero-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .hero-visual {
+                max-width: 600px;
+                width: 100%;
+                margin: auto;
+            }
+
+            .why-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .why-image {
+                height: 350px;
+            }
+
+            .nav-links {
+                gap: 18px;
+            }
+        }
+
+        @media(max-width: 650px) {
+            .navbar {
+                height: 70px;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 70px;
+                left: 0;
+                width: 100%;
+                padding: 25px 5%;
+                background: var(--cream);
+                border-bottom: 1px solid var(--border);
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 23px;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .nav-actions .btn-outline {
+                display: none;
+            }
+
+            .nav-actions .btn {
+                padding: 10px 13px;
+                font-size: 11px;
+            }
+
+            .logo {
+                font-size: 19px;
+            }
+
+            .hero {
+                padding: 65px 0 70px;
+            }
+
+            .hero h1 {
+                font-size: 46px;
+                letter-spacing: -2.5px;
+            }
+
+            .hero-description {
+                font-size: 14px;
+            }
+
+            .hero-visual {
+                min-height: 330px;
+            }
+
+            .visual-main {
+                height: 310px;
+            }
+
+            .floating-card.top {
+                left: -8px;
+            }
+
+            .floating-card.bottom {
+                right: -8px;
+            }
+
+            .trust-grid {
+                grid-template-columns: 1fr;
+                gap: 23px;
+            }
+
+            .trust-item {
+                justify-content: flex-start;
+            }
+
+            section.content-section {
+                padding: 70px 0;
+            }
+
+            .steps-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .user-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .user-card {
+                padding: 28px;
+            }
+
+            .why-content h2 {
+                font-size: 33px;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 35px 20px;
+            }
+
+            .footer-brand {
+                grid-column: 1 / -1;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+            }
+
+            .cta-box {
+                padding: 55px 23px;
+            }
+        }
+
+        @media(prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                scroll-behavior: auto !important;
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+            }
+
+            .reveal {
+                opacity: 1;
+                transform: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+
+    <header class="navbar">
+        <div class="container nav-inner">
+
+            <a href="index.html" class="logo">
+                <span class="logo-icon">♻</span>
+                RecycleLink
+            </a>
+
+            <nav class="nav-links" id="navLinks">
+                <a href="#home">Home</a>
+                <a href="#how-it-works">How It Works</a>
+                <a href="#why-us">Why RecycleLink</a>
+                <a href="#join">Join Us</a>
+            </nav>
+
+            <div class="nav-actions">
+                <a href="login.html" class="btn btn-outline">Login</a>
+                <a href="register.html" class="btn btn-primary">Get Started ↗</a>
+                <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation" aria-expanded="false">☰</button>
+            </div>
+
+        </div>
+    </header>
+
+
+    <main>
+
+        <!-- HERO -->
+
+        <section class="hero" id="home">
+            <div class="container hero-grid">
+
+                <div class="hero-content reveal">
+
+                    <div class="eyebrow">
+                        <span></span>
+                        Building a circular future
+                    </div>
+
+                    <h1>
+                        Turn Waste<br>
+                        Into <em>Worth.</em>
+                    </h1>
+
+                    <p class="hero-description">
+                        A smarter connection between waste collectors
+                        and recyclers. Discover opportunities, compare
+                        offers and give recyclable materials a second life.
+                    </p>
+
+                    <div class="hero-actions">
+                        <a href="register.html" class="btn btn-primary">
+                            Start Recycling <span>↗</span>
+                        </a>
+
+                        <a href="#how-it-works" class="btn btn-outline">
+                            Explore Platform ↓
+                        </a>
+                    </div>
+
+                    <div class="hero-note">
+                        <span>🌱</span>
+                        <span><strong>One connection at a time.</strong> A cleaner tomorrow starts today.</span>
+                    </div>
+
+                </div>
+
+                <div class="hero-visual reveal">
+
+                    <div class="visual-main">
+                        <div class="visual-overlay"></div>
+
+                        <div class="visual-content">
+                            <small>Small actions. Meaningful change.</small>
+                            <h3>Waste deserves a second life.</h3>
+                            <p>Connect. Recover. Reuse.</p>
+                        </div>
+                    </div>
+
+                    <div class="floating-card top">
+                        <div class="float-icon">♻️</div>
+                        <div class="float-label">A better waste journey</div>
+                        <div class="float-value">Circular Economy</div>
+                    </div>
+
+                    <div class="floating-card bottom">
+                        <div class="float-label">Built around</div>
+                        <div class="float-value">Direct Connections ↗</div>
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- TRUST STRIP -->
+
+        <section class="trust-strip">
+            <div class="container trust-grid">
+
+                <div class="trust-item">
+                    <div class="trust-icon">🤝</div>
+                    <div>
+                        <h4>Direct Connections</h4>
+                        <p>Collectors meet recyclers</p>
+                    </div>
+                </div>
+
+                <div class="trust-item">
+                    <div class="trust-icon">💰</div>
+                    <div>
+                        <h4>Competitive Offers</h4>
+                        <p>Compare prices before deciding</p>
+                    </div>
+                </div>
+
+                <div class="trust-item">
+                    <div class="trust-icon">🌍</div>
+                    <div>
+                        <h4>Responsible Recycling</h4>
+                        <p>Resources stay in circulation</p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- HOW IT WORKS -->
+
+        <section class="content-section" id="how-it-works">
+
+            <div class="container">
+
+                <div class="section-heading reveal">
+                    <div class="section-label">Simple by design</div>
+                    <h2>A better way to connect the recycling ecosystem.</h2>
+                    <p>
+                        RecycleLink makes the journey from recyclable
+                        waste to the right recycler simpler and more transparent.
+                    </p>
+                </div>
+
+                <div class="steps-grid">
+
+                    <article class="step-card reveal">
+                        <div class="step-number">01 / LIST</div>
+                        <div class="step-icon">📦</div>
+                        <h3>List Your Materials</h3>
+                        <p>
+                            Collectors can publish available recyclable
+                            materials with quantity, description and location.
+                        </p>
+                    </article>
+
+                    <article class="step-card reveal">
+                        <div class="step-number">02 / CONNECT</div>
+                        <div class="step-icon">🔎</div>
+                        <h3>Discover & Receive Offers</h3>
+                        <p>
+                            Recyclers explore available listings and submit
+                            their offers directly to collectors.
+                        </p>
+                    </article>
+
+                    <article class="step-card reveal">
+                        <div class="step-number">03 / RECYCLE</div>
+                        <div class="step-icon">🌱</div>
+                        <h3>Choose & Complete</h3>
+                        <p>
+                            Collectors review offers, choose a suitable
+                            recycler and coordinate the material handover.
+                        </p>
+                    </article>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- WHY RECYCLELINK -->
+
+        <section class="content-section why-section" id="why-us">
+
+            <div class="container why-grid">
+
+                <div class="why-image reveal"></div>
+
+                <div class="why-content reveal">
+
+                    <div class="section-label">Why RecycleLink</div>
+
+                    <h2>Making recycling more connected, transparent and accessible.</h2>
+
+                    <p>
+                        Valuable recyclable materials can go to waste when
+                        collectors and recyclers struggle to find each other.
+                        RecycleLink aims to bridge that gap through a
+                        straightforward digital marketplace.
+                    </p>
+
+                    <div class="feature-list">
+
+                        <div class="feature">
+                            <div class="feature-check">✓</div>
+                            <div>
+                                <h4>Transparent Offers</h4>
+                                <p>Review offers from recyclers before making a decision.</p>
+                            </div>
+                        </div>
+
+                        <div class="feature">
+                            <div class="feature-check">✓</div>
+                            <div>
+                                <h4>One Connected Platform</h4>
+                                <p>Bring collectors and recycling facilities together in one place.</p>
+                            </div>
+                        </div>
+
+                        <div class="feature">
+                            <div class="feature-check">✓</div>
+                            <div>
+                                <h4>Better Resource Recovery</h4>
+                                <p>Help recyclable materials find their way back into the resource cycle.</p>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- JOIN AS COLLECTOR OR RECYCLER -->
+
+        <section class="content-section" id="join">
+
+            <div class="container">
+
+                <div class="section-heading reveal">
+                    <div class="section-label">Find your place</div>
+                    <h2>Two sides. One connected ecosystem.</h2>
+                    <p>
+                        Whether you collect recyclable materials or
+                        operate a recycling facility, there is a place for you.
+                    </p>
+                </div>
+
+                <div class="user-grid">
+
+                    <article class="user-card reveal">
+
+                        <div class="user-icon">♻️</div>
+
+                        <h3>For Collectors</h3>
+
+                        <p>
+                            Turn your collected recyclable materials into
+                            opportunities. Publish listings, receive offers
+                            and choose the recycler that works for you.
+                        </p>
+
+                        <a href="register.html?role=collector" class="btn btn-primary">
+                            Join as Collector ↗
+                        </a>
+
+                    </article>
+
+                    <article class="user-card dark reveal">
+
+                        <div class="user-icon">🏭</div>
+
+                        <h3>For Recyclers</h3>
+
+                        <p>
+                            Discover available recyclable materials,
+                            connect with collectors and submit competitive
+                            offers for suitable listings.
+                        </p>
+
+                        <a href="register.html?role=recycler" class="btn">
+                            Join as Recycler ↗
+                        </a>
+
+                    </article>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- FINAL CTA -->
+
+        <section class="cta-section">
+            <div class="container">
+
+                <div class="cta-box reveal">
+
+                    <h2>Let's make waste worth something.</h2>
+
+                    <p>
+                        Every material has potential. Every connection
+                        creates an opportunity. Be part of a more connected
+                        recycling ecosystem.
+                    </p>
+
+                    <a href="register.html" class="btn">
+                        Get Started with RecycleLink ↗
+                    </a>
+
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+
+    <!-- FOOTER -->
+
+    <footer>
+
+        <div class="container">
+
+            <div class="footer-grid">
+
+                <div class="footer-brand">
+
+                    <a href="index.html" class="logo">
+                        <span class="logo-icon">♻</span>
+                        RecycleLink
+                    </a>
+
+                    <p>
+                        Connecting waste collectors and recyclers through
+                        a smarter, more transparent digital marketplace.
+                        Together, we can help build a circular future.
+                    </p>
+
+                </div>
+
+                <div>
+                    <h4 class="footer-heading">Explore</h4>
+                    <div class="footer-links">
+                        <a href="#home">Home</a>
+                        <a href="#how-it-works">How It Works</a>
+                        <a href="#why-us">Why RecycleLink</a>
+                        <a href="#join">Join Us</a>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="footer-heading">Account</h4>
+                    <div class="footer-links">
+                        <a href="login.html">Login</a>
+                        <a href="register.html">Register</a>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="footer-bottom">
+                <p>© <span id="year"></span> RecycleLink. All rights reserved.</p>
+                <p>Turn Waste Into Worth. 🌱</p>
+            </div>
+
+        </div>
+
+    </footer>
+
+
+    <!-- VANILLA JAVASCRIPT -->
+
+    <script>
+
+        // Mobile navigation
+
+        const menuToggle = document.getElementById("menuToggle");
+        const navLinks = document.getElementById("navLinks");
+
+        menuToggle.addEventListener("click", () => {
+            const isOpen = navLinks.classList.toggle("active");
+            menuToggle.setAttribute("aria-expanded", String(isOpen));
+            menuToggle.textContent = isOpen ? "✕" : "☰";
+        });
+
+        // Close mobile navigation after clicking a link
+
+        document.querySelectorAll(".nav-links a").forEach(link => {
+            link.addEventListener("click", () => {
+                navLinks.classList.remove("active");
+                menuToggle.setAttribute("aria-expanded", "false");
+                menuToggle.textContent = "☰";
+            });
+        });
+
+        // Dynamic footer year
+
+        document.getElementById("year").textContent =
+            new Date().getFullYear();
+
+        // Scroll reveal animations
+
+        const revealElements = document.querySelectorAll(".reveal");
+
+        if ("IntersectionObserver" in window) {
+            const observer = new IntersectionObserver((entries, obs) => {
+
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add("visible");
+                        obs.unobserve(entry.target);
+                    }
+                });
+
+            }, {
+                threshold: 0.12
+            });
+
+            revealElements.forEach(element => {
+                observer.observe(element);
+            });
+        } else {
+            revealElements.forEach(element => {
+                element.classList.add("visible");
+            });
+        }
+
+    </script>
+
+</body>
+</html>

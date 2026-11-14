@@ -29,6 +29,7 @@ async function initializeCollector() {
     `Welcome, ${profile.full_name}`;
 
   await loadListings();
+  await loadOffers();
 }
 
 async function loadListings() {
@@ -84,6 +85,118 @@ async function loadListings() {
   });
 }
 
+async function loadOffers() {
+  const container = document.getElementById("receivedOffers");
+
+  if (!container) {
+    console.error("Offers container missing from collector.html");
+    return;
+  }
+
+  container.textContent = "Loading offers...";
+
+  try {
+    // Get this collector's listings
+    const { data: listings, error: listingError } = await supabaseClient
+      .from("waste_listings")
+      .select("id, material")
+      .eq("collector_id", currentUser.id);
+
+    if (listingError) throw listingError;
+
+    if (!listings || listings.length === 0) {
+      container.textContent = "No offers received yet.";
+      return;
+    }
+
+    const listingIds = listings.map(item => item.id);
+    const listingMap = new Map(
+      listings.map(item => [item.id, item.material])
+    );
+
+    // Get offers for those listings
+    const { data: offers, error: offerError } = await supabaseClient
+      .from("offers")
+      .select("*")
+      .in("listing_id", listingIds)
+      .order("created_at", { ascending: false });
+
+    if (offerError) throw offerError;
+
+    if (!offers || offers.length === 0) {
+      container.textContent = "No offers received yet.";
+      return;
+    }
+
+    // Get recycler facility details
+    const recyclerIds = [...new Set(offers.map(item => item.recycler_id))];
+
+    const { data: recyclers, error: recyclerError } = await supabaseClient
+      .from("recyclers")
+      .select("id, user_id, facility_name")
+      .in("id", recyclerIds);
+
+    if (recyclerError) throw recyclerError;
+
+    const recyclerMap = new Map(
+      (recyclers || []).map(item => [item.id, item])
+    );
+
+    // Get recycler account names
+    const userIds = [
+      ...new Set((recyclers || []).map(item => item.user_id))
+    ];
+
+    const { data: profiles, error: profileError } = await supabaseClient
+      .from("profiles")
+      .select("id, full_name")
+      .in("id", userIds);
+
+    if (profileError) throw profileError;
+
+    const profileMap = new Map(
+      (profiles || []).map(item => [item.id, item.full_name])
+    );
+
+    container.replaceChildren();
+
+    offers.forEach(offer => {
+      const recycler = recyclerMap.get(offer.recycler_id);
+
+      const card = document.createElement("article");
+      card.className = "offer-card";
+
+      const title = document.createElement("h3");
+      title.textContent = `${listingMap.get(offer.listing_id) || "Waste listing"} — Offer`;
+
+      const facility = document.createElement("p");
+      facility.textContent =
+        `Facility: ${recycler?.facility_name || "Unknown facility"}`;
+
+      const recyclerName = document.createElement("p");
+      recyclerName.textContent =
+        `Recycler: ${profileMap.get(recycler?.user_id) || "Unknown"}`;
+
+      const price = document.createElement("h3");
+      price.textContent = `₹${Number(offer.offered_price).toLocaleString("en-IN")}`;
+
+      const message = document.createElement("p");
+      message.textContent = `Message: ${offer.message || "No message provided"}`;
+
+      const status = document.createElement("span");
+      status.className = "status-tag";
+      status.textContent = offer.status;
+
+      card.append(title, facility, recyclerName, price, message, status);
+      container.appendChild(card);
+    });
+
+  } catch (error) {
+    console.error("Error loading offers:", error);
+    container.textContent = `Could not load offers: ${error.message}`;
+  }
+}
+
 if (listingForm) {
   listingForm.addEventListener("submit", async (event) => {
     event.preventDefault();
@@ -122,6 +235,7 @@ if (listingForm) {
 
       listingForm.reset();
       await loadListings();
+      await loadOffers();
 
     } catch (error) {
       console.error(error);

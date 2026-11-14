@@ -243,3 +243,57 @@ button:disabled {
     grid-template-columns: 1fr;
   }
 }
+
+.verification-notice {
+  padding: 14px;
+  background: #fff7df;
+  color: #795b12;
+  border: 1px solid #f1dfaa;
+  border-radius: 10px;
+  font-size: 14px;
+  margin-top: 20px;
+}
+
+.marketplace-card {
+  border: 1px solid #e0e9e1;
+  border-radius: 13px;
+  padding: 18px;
+  margin-top: 15px;
+}
+
+.marketplace-card h3 {
+  color: #238c55;
+  margin-bottom: 10px;
+}
+
+.marketplace-card p {
+  color: #647269;
+  font-size: 14px;
+  margin: 7px 0;
+}
+
+.offer-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 1px solid #e5ece6;
+}
+
+.offer-form button {
+  margin-top: 5px;
+}
+
+.offer-card {
+  padding: 15px;
+  border: 1px solid #e0e9e1;
+  border-radius: 10px;
+  margin-top: 12px;
+}
+
+.offer-card p {
+  margin: 6px 0;
+  font-size: 14px;
+  color: #647269;
+}
